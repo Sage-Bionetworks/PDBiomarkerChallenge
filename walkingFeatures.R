@@ -1,4 +1,5 @@
-# Walk feature extraction for test data: syn9819506
+# Walk feature extraction for test data: demographics:syn9819508 , table:syn9819506
+# Walk feature extraction for training data: demographics:syn9819507 , table:syn9819505
 
 # load all necessary libraries
 library(synapseClient)
@@ -17,12 +18,14 @@ library(plyr)
 library(mpowertools) # to install mpowertools run: library(devtools); devtools::install_github("Sage-Bionetworks/mpowertools")
 
 # read in the healthCodes of interest from demographics testing table
+# for training features: change synId here to match the training demographics synId listed at top
 demo_syntable <- synTableQuery("SELECT * FROM syn9819508")
 demo <- demo_syntable@values
 healthCodeCol <- c(as.character(demo$healthCode))
 healthCodeList <- paste0(sprintf("'%s'", healthCodeCol), collapse = ", ")
 
 # Query table of interest, walking testing table
+# for training features: change synId here to match the training table synId listed at top
 INPUT_WALKING_ACTIVITY_TABLE_SYNID = 'syn9819506'
 actv_walking_syntable <- synTableQuery(paste0("SELECT 'recordId', 'healthCode','deviceMotion_walking_outbound.json.items' FROM ", INPUT_WALKING_ACTIVITY_TABLE_SYNID, " WHERE healthCode IN ", "(", healthCodeList, ")"))
 actv_walking <- actv_walking_syntable@values
