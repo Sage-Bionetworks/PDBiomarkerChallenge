@@ -1,6 +1,6 @@
 # simplified_rest.py
 
-# Rest feature extraction for training data: demographics:syn9819507 , table:syn9819505
+# Rest feature extraction for training data: demographics: syn10146552, table: syn10146553
 
 import synapseclient
 # use syn = synapseclient.login() if you've already set up your config file
@@ -10,12 +10,12 @@ import json
 import numpy as np
 
 # read in the healthCodes of interest from demographics training table
-demo_syntable = syn.tableQuery("SELECT * FROM syn9819507")
+demo_syntable = syn.tableQuery("SELECT * FROM syn10146552")
 demo = demo_syntable.asDataFrame()
 healthCodeList = ", ".join( repr(i) for i in demo["healthCode"]) 
 
 # Query 'walking training table' for rest data recordIDs and healthCodes. 
-INPUT_REST_ACTIVITY_TABLE_SYNID = "syn9819505"
+INPUT_REST_ACTIVITY_TABLE_SYNID = "syn10146553"
 actv_rest_syntable = syn.tableQuery(('SELECT "recordId", "healthCode", "deviceMotion_walking_rest.json.items" FROM {0} WHERE healthCode IN ({1}) AND "deviceMotion_walking_rest.json.items" is not null LIMIT 500').format(INPUT_REST_ACTIVITY_TABLE_SYNID, healthCodeList))
 actv_rest = actv_rest_syntable.asDataFrame()
 actv_rest['idx'] = actv_rest.index
