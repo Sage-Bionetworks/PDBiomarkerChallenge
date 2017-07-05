@@ -1,4 +1,4 @@
-# Walk feature extraction for training data: demographics:syn10146552 , table:syn10146553
+# Rest feature extraction for training data: demographics:syn10146552 , table:syn10146553
 library(synapseClient)
 synapseLogin()
 library(plyr)
@@ -19,8 +19,7 @@ demo <- demo_syntable@values
 healthCodeCol <- c(as.character(demo$healthCode))
 healthCodeList <- paste0(sprintf("'%s'", healthCodeCol), collapse = ", ")
 
-# Query table of interest, walking testing table
-# for training features: change synId here to match the training table synId listed at top
+# Query 'walking training table' for rest data
 INPUT_REST_ACTIVITY_TABLE_SYNID = "syn10146553"
 actv_rest_syntable <- synTableQuery(paste0("SELECT 'recordId', 'healthCode', 'deviceMotion_walking_rest.json.items' FROM ", INPUT_REST_ACTIVITY_TABLE_SYNID, " WHERE healthCode IN ", "(", healthCodeList, ")"))
 actv_rest <- actv_rest_syntable@values
@@ -32,7 +31,7 @@ actvRest_selected_rows <- actv_rest$idx
 ######################
 # Download JSON Files
 ######################
-# rest JSON files
+# bulk download rest JSON files containing sensor data
 rest_json_files <- synDownloadTableColumns(actv_rest_syntable, "deviceMotion_walking_rest.json.items")
 rest_json_files <- data.frame(rest_json_fileId =names(rest_json_files),
                               rest_json_file = as.character(rest_json_files))
